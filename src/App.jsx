@@ -8,13 +8,13 @@ import AccessDenied from './pages/AccessDenied';
 function App() {
   return (
     <Routes>
-      {/* Redirect root to login */}
+
       <Route path="/" element={<Navigate to="/login" replace />} />
 
-      {/* Public login page */}
+    
       <Route path="/login" element={<Login />} />
 
-      {/* Protected pages */}
+
       <Route
         path="/dashboard"
         element={
@@ -32,10 +32,9 @@ function App() {
         }
       />
 
-      {/* Access denied page */}
+      
       <Route path="/access-denied" element={<AccessDenied />} />
 
-      {/* Catch-all for undefined routes */}
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
