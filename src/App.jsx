@@ -16,7 +16,7 @@ function App() {
   const isLoggedIn = !!user;
   const isLoginPage = location.pathname === "/login";
 
-  // ✅ Only show Login page when route is /login
+  
   if (isLoginPage) {
     return (
       <Routes>
@@ -26,7 +26,7 @@ function App() {
     );
   }
 
-  // ✅ Main layout with Sidebar + Header for logged-in users
+ 
   return (
     <>
       {isLoggedIn && <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />}
@@ -35,7 +35,7 @@ function App() {
         {isLoggedIn && <Header collapsed={collapsed} />}
 
         <Routes>
-          {/* Default route for Super Admins */}
+         
           <Route
             path="/"
             element={
@@ -45,7 +45,7 @@ function App() {
             }
           />
 
-          {/* Analytics route for both roles */}
+   
           <Route
             path="/analytics"
             element={
@@ -55,7 +55,7 @@ function App() {
             }
           />
 
-          {/* Catch-all redirect based on login status */}
+       
           <Route
             path="*"
             element={<Navigate to={isLoggedIn ? "/" : "/login"} replace />}
