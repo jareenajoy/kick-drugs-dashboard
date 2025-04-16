@@ -1,4 +1,7 @@
+// src/pages/Analytics.jsx
+
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Row, Col, Form, Container } from "react-bootstrap";
 import {
   BarChart,
@@ -81,14 +84,15 @@ const Analytics = () => {
   const [selectedYear, setSelectedYear] = useState("This year");
   const [selectedDistrict, setSelectedDistrict] = useState("Kottayam");
 
+  const { user } = useSelector((state) => state.auth);
+
   const barChartData = districtStatsByYear[selectedYear] || [];
   const pieData = pieChartDataByDistrict[selectedDistrict] || [];
 
   return (
     <Container fluid className="py-4 px-xl-4 px-2 dashboard">
-     
-
-      <StatsSection />
+      {/* 👇 Hide status section for restricted user */}
+      {user?.username !== "regional2" && <StatsSection />}
 
       <Row className="mt-5">
         <Col md={8} className="graph px-2 px-xl-5">
@@ -112,7 +116,7 @@ const Analytics = () => {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" angle={-40} textAnchor="end" height={80} />
-            <YAxis className="font"/>
+            <YAxis className="font" />
             <Tooltip />
             <Bar dataKey="count" fill="#33a5e7" />
           </BarChart>
@@ -155,25 +159,69 @@ const Analytics = () => {
             </PieChart>
           )}
 
-
-<ul className="flex-wrap flex-xl-nowrap" style={{ listStyle: "none", padding: 0, display: "flex", justifyContent: "center", gap: "1.5rem" }}>
-    <li style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-      <span style={{ background: "#ff4d4f", width: 12, height: 12, borderRadius: "50%" }}></span>
-      Men
-    </li>
-    <li style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-      <span style={{ background: "#3b82f6", width: 12, height: 12, borderRadius: "50%" }}></span>
-      Women
-    </li>
-    <li style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-      <span style={{ background: "#fbbf24", width: 12, height: 12, borderRadius: "50%" }}></span>
-      Individual
-    </li>
-    <li style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-      <span style={{ background: "#0f766e", width: 12, height: 12, borderRadius: "50%" }}></span>
-      Organisation
-    </li>
-  </ul>
+          <ul
+            className="flex-wrap flex-xl-nowrap"
+            style={{
+              listStyle: "none",
+              padding: 0,
+              display: "flex",
+              justifyContent: "center",
+              gap: "1.5rem",
+            }}
+          >
+            <li
+              style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}
+            >
+              <span
+                style={{
+                  background: "#ff4d4f",
+                  width: 12,
+                  height: 12,
+                  borderRadius: "50%",
+                }}
+              ></span>
+              Men
+            </li>
+            <li
+              style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}
+            >
+              <span
+                style={{
+                  background: "#3b82f6",
+                  width: 12,
+                  height: 12,
+                  borderRadius: "50%",
+                }}
+              ></span>
+              Women
+            </li>
+            <li
+              style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}
+            >
+              <span
+                style={{
+                  background: "#fbbf24",
+                  width: 12,
+                  height: 12,
+                  borderRadius: "50%",
+                }}
+              ></span>
+              Individual
+            </li>
+            <li
+              style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}
+            >
+              <span
+                style={{
+                  background: "#0f766e",
+                  width: 12,
+                  height: 12,
+                  borderRadius: "50%",
+                }}
+              ></span>
+              Organisation
+            </li>
+          </ul>
         </Col>
       </Row>
     </Container>

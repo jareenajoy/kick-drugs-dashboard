@@ -1,16 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import App from "./App";
-import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import './Sidebar.css';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './redux/store.js';
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter> {/* 🛠️ Add this */}
       <App />
     </BrowserRouter>
   </Provider>
 );
-

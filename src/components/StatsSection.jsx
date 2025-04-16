@@ -1,21 +1,25 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";//useSelector to access state from the Redux store.
+//useDispatch to dispatch actions (like fetchStats()).
 import { Row, Col, Spinner } from "react-bootstrap";
 import StatsCard from "./StatsCard";
 import { fetchStats } from "../redux/statsSlice"; 
+//Imports the fetchStats Redux async thunk/action from your statsSlice, which fetches statistics data from an API.
 
-const StatsSection = () => {
-  const dispatch = useDispatch();
-  const { data, loading, error } = useSelector((state) => state.stats);
+const StatsSection = () => {//Defines the functional component StatsSection.
+  const dispatch = useDispatch();//Initializes dispatch function to trigger Redux actions.
+  const { data, loading, error } = useSelector((state) => state.stats);//Grabs data, loading, and error from the stats slice of the Redux store using useSelector.
+
+
 
   
-  useEffect(() => {
+  useEffect(() => {//Runs once after the component mounts (and when data changes).
     if (!data) {
-      dispatch(fetchStats());
+      dispatch(fetchStats());//If data is not already loaded, it dispatches fetchStats() to load it.
     }
   }, [dispatch, data]);
 
-  if (loading || !data) {
+  if (loading || !data) {//If loading is in progress or data hasn't arrived yet, it shows a centered spinner.
     return (
       <div className="text-center mt-5">
         <Spinner animation="border" variant="primary" />
@@ -23,7 +27,7 @@ const StatsSection = () => {
     );
   }
 
-  if (error) {
+  if (error) {//If an error occurred during the fetch, display the error in red, centered.
     return <div className="text-danger text-center mt-4">{error}</div>;
   }
 

@@ -1,24 +1,56 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useState } from "react";
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
-
+import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
+  const { user } = useSelector((state) => state.auth);
+  const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const isLoggedIn = !!user;
+  const isLoginPage = location.pathname === "/login";
 
+  if (isLoginPage) {
+    // Show only login (outside layout)
+    return (
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    );
+  }
+
+  // Show the main layout with Sidebar + Header
   return (
     <>
-      <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />
-     
+      {isLoggedIn && <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />}
+
       <div className={`main-content ${collapsed ? "collapsed" : ""}`}>
-      <Header collapsed={collapsed} />
+        {isLoggedIn && <Header collapsed={collapsed} />}
+
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/analytics" element={<Analytics />} />
-         
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute allowedRoles={['super']}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute allowedRoles={['super', 'regional']}>
+                <Analytics />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     </>

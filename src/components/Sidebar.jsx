@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom"; 
+import { Link, useLocation } from "react-router-dom"; //Link: Used for internal navigation between routes without page reload.
+//useLocation: Gives access to the current route (pathname), useful for highlighting active menu items.
 import { IoIosCloseCircleOutline } from "react-icons/io";
+//Imports a close icon for closing the sidebar on mobile.
 import {
   FaBars,
   FaHome,
@@ -17,25 +19,30 @@ import {
 import "../Sidebar.css";
 
 const Sidebar = () => {
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);//Controls whether the mobile sidebar is open or not.
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);//Tracks if the current screen size is mobile (true if width ≤ 768px).
 
   const location = useLocation(); // track current route
-
+//Gets the current browser route (e.g., /analytics) to highlight the active link.
   useEffect(() => {
+    //Adds an event listener to detect screen resizing.
+
+//Updates isMobile if window width crosses 768px.
+
+//Cleans up the listener when the component unmounts.
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
+//Closes the mobile sidebar.
   const handleClose = () => setIsMobileOpen(false);
   const handleLinkClick = () => {
-    if (isMobile) setIsMobileOpen(false);
+    if (isMobile) setIsMobileOpen(false);//Closes the sidebar only on mobile when any link is clicked.
   };
 
   // Reusable function to apply active class
-  const isActive = (path) => (location.pathname === path ? "sidebar-item active" : "sidebar-item");
-
+  const isActive = (path) => (location.pathname === path ? "sidebar-item active" : "sidebar-item");//Checks if the current route matches the given path.
+//Returns the class active to highlight the selected menu item.
   return (
     <>
       {isMobile && (
@@ -56,10 +63,11 @@ const Sidebar = () => {
         )}
 
         <nav className="mt-5">
-          <Link to="/" className={isActive("/")} onClick={handleLinkClick}>
-            <FaHome />
-            <span>Overview</span>
-          </Link>
+        <Link to="/" className={isActive("/")} onClick={handleLinkClick}>
+  <FaHome />
+  <span>Overview</span>
+</Link>
+          
           <Link to="/analytics" className={isActive("/analytics")} onClick={handleLinkClick}>
             <FaChartBar />
             <span>Analytics</span>
@@ -94,10 +102,10 @@ const Sidebar = () => {
             <FaCog />
             <span>Settings</span>
           </Link>
-          <Link to="/logout" className={isActive("/logout")} onClick={handleLinkClick}>
-            <FaSignOutAlt />
-            <span>Logout</span>
-          </Link>
+          <Link to="/login" className={isActive("/logout")} onClick={handleLinkClick}>
+  <FaSignOutAlt />
+  <span>Logout</span>
+</Link>
         </nav>
       </div>
     </>

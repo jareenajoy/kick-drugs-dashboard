@@ -1,11 +1,10 @@
 <<<<<<< HEAD
 # kick-drugs-dashboard
 =======
-# 1 React + Vite
+# 1 React + Vite 
+# 2 Kick Drugs Dashboard – Role-Based Access Control
 
-# 2 Kick Drugs Dashboard
-
-A responsive and interactive dashboard built with React, Redux Toolkit, React Bootstrap, and Recharts.
+This is a React dashboard application demonstrating a role-based access and permission system built for an interview task. It features two types of users with login functionality and dynamic access control based on their roles.
 
 # 3 Folder structure
 
@@ -14,9 +13,10 @@ kick-drugs-dashboard/
 ├── public/
 ├── src/
 │   ├── assets/              # Static images used in dashboard
-│   ├── components/          # Sidebar, Header, StatsSection, StatsCard
-│   ├── pages/               # Dashboard and Analytics pages
-│   ├── redux/               # Redux store & statsSlice
+│   ├── components/          # Sidebar, Header, StatsSection, StatsCard,AccessDenied,ProtectedRoute
+│   ├── pages/               # Dashboard, Analytics and AccessDenied pages
+│   ├── data/                # users
+│   ├── redux/               # Redux store,authSlice & statsSlice
 │   ├── services/            # API file (fetchUsers)
 │   ├── App.jsx              # App routing and layout
 │   ├── main.jsx             # React root, Provider & Router setup
@@ -24,6 +24,13 @@ kick-drugs-dashboard/
 │
 ├── package.json
 └── README.md
+
+## Dummy Login Credentials
+
+| Role	             | Username	     | Password	    |Access
+| Super Admin        | superadmin	 | super123		- Full access to Dashboard and Analytics
+| Regional Admin (1) | regional1	 | reg123	  	- Access to Analytics only
+| Regional Admin (2) | regional2	 | reg123	   	- No access to Status section in Analytics
 
 # 4  Tech Stack
 
@@ -43,19 +50,19 @@ Bootsrap
 
 # 4 Features
 
-Sticky Sidebar and Responsive Header
+Login System with dummy users
 
-Dynamic Statistics with real-time mock API integration
+Super Admin: Full access to all pages (Dashboard, Analytics)
 
-District-wise bar charts (This Year / Last Year switch)
+Regional Admin: Access to Analytics page only
 
-Gender distribution pie chart per district
+Conditional access: One Regional Admin has limited permissions
 
-Reusable components for stats display
+Charts and Statistics: Gender & District-based visualizations
 
-Redux-powered global state management
+Route-level and component-level access restriction
 
-Bootstrap for responsive layout
+Logout system with route redirect
 
 
 # 5
@@ -68,7 +75,7 @@ bash
 npm install
 npm run dev
 Open in browser
-http://localhost:5173
+
 
 # 6 Data Source
 Mock user data is fetched using a utility in /services/api.js. Based on that:
