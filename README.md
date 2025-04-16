@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# kick-drugs-dashboard
-=======
 # 1 React + Vite 
 # 2 Kick Drugs Dashboard – Role-Based Access Control
 
@@ -101,4 +98,3 @@ Gender distribution per district (Pie chart)
 Shared statistics cards using Redux data
 
 
->>>>>>> 9d86557 (Initial commit for Kick Drugs Dashboard)
