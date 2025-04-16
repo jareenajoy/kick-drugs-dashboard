@@ -1,42 +1,68 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
 import Dashboard from './pages/Dashboard';
 import Analytics from './pages/Analytics';
+import Login from './pages/Login';
 import ProtectedRoute from './components/ProtectedRoute';
-import AccessDenied from './pages/AccessDenied';
 
 function App() {
+  const { user } = useSelector((state) => state.auth);
+  const location = useLocation();
+  const [collapsed, setCollapsed] = useState(false);
+  const isLoggedIn = !!user;
+  const isLoginPage = location.pathname === "/login";
+
+  // ✅ Only show Login page when route is /login
+  if (isLoginPage) {
+    return (
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    );
+  }
+
+  // ✅ Main layout with Sidebar + Header for logged-in users
   return (
-    <Routes>
+    <>
+      {isLoggedIn && <Sidebar collapsed={collapsed} setCollapsed={setCollapsed} />}
 
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <div className={`main-content ${collapsed ? "collapsed" : ""}`}>
+        {isLoggedIn && <Header collapsed={collapsed} />}
 
-    
-      <Route path="/login" element={<Login />} />
+        <Routes>
+          {/* Default route for Super Admins */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute allowedRoles={['super']}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
 
+          {/* Analytics route for both roles */}
+          <Route
+            path="/analytics"
+            element={
+              <ProtectedRoute allowedRoles={['super', 'regional']}>
+                <Analytics />
+              </ProtectedRoute>
+            }
+          />
 
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute allowedRoles={['super']}>
-            <Dashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/analytics"
-        element={
-          <ProtectedRoute allowedRoles={['super', 'regional']}>
-            <Analytics />
-          </ProtectedRoute>
-        }
-      />
-
-      
-      <Route path="/access-denied" element={<AccessDenied />} />
-
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
+          {/* Catch-all redirect based on login status */}
+          <Route
+            path="*"
+            element={<Navigate to={isLoggedIn ? "/" : "/login"} replace />}
+          />
+        </Routes>
+      </div>
+    </>
   );
 }
 
